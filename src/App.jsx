@@ -7,6 +7,7 @@ import './game.css'
 import CannonDebugger from 'cannon-es-debugger';
 import axios from 'axios';
 import SceneInit from './lib/SceneInit';
+import urlVariable from '../variable';
 
 function App() {
   const [compteur, setCompteur] = useState(0); 
@@ -33,7 +34,7 @@ const handleNameSubmit = (e) => {
   }, [fuel]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/jeu_temps')
+    axios.get(`${urlVariable}/jeu_temps`)
     .then(response => {
       console.log('Données reçues:', response.data);
       setJeuTempsData(response.data);
@@ -109,7 +110,7 @@ const handleNameSubmit = (e) => {
   }
   
   const postTimeData = (formattedTime) => {
-    axios.post('http://localhost:3001/insert_time', {
+    axios.post(`${urlVariable}/insert_time`, {
       playerName,
       time: formattedTime
     })
@@ -189,7 +190,7 @@ const handleNameSubmit = (e) => {
     });
   
     // Création des pièces
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 35; i++) {
       createCoin(globalMin, globalMax, monde, integrationCanvas); 
     }
 
@@ -412,7 +413,7 @@ const handleNameSubmit = (e) => {
             
             setCompteur(compteur => {
               const newCount = compteur + 1;
-              if (newCount === 1) {
+              if (newCount === 15) {
                 const currentTimerValue = timerRef.current;
                 const formattedTime = formatTime(currentTimerValue);
                 postTimeData(formattedTime);
